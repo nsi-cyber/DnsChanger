@@ -39,12 +39,15 @@ public class MyVpnService extends VpnService {
     ByteBuffer packet2;
     //a. Configure a builder for the interface.
     Builder builder = new Builder();
-
+    String dns6dIp;
     // Services interface
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         String deviceIp=intent.getStringExtra("deviceips");
         String dnsIp=intent.getStringExtra("dnsips");
+boolean v6=intent.getBooleanExtra("v6",false);
+if (v6)
+    dns6dIp=intent.getStringExtra("dns6ips");
 
         // Start a new session by creating a new thread.
         mThread = new Thread(new Runnable() {
@@ -52,10 +55,21 @@ public class MyVpnService extends VpnService {
             public void run() {
                 try {
                     //a. Configure the TUN and get the interface.
-                    mInterface = builder.setSession("MyVPNService")
-                            .addAddress(deviceIp, 24)
-                            .addDnsServer(dnsIp)
-                            .addRoute("0.0.0.0", 0).establish();
+                    if (v6) {
+                        builder.setSession("MyVPNService");
+                        builder.addAddress(deviceIp, 24);
+                        builder.addDnsServer(dnsIp);
+                        builder.addRoute(dnsIp,32);
+                        builder.addDnsServer(dns6dIp);
+                        builder.addRoute(dns6dIp, 128);
+                        mInterface = builder.establish();
+                    }
+                    else{
+                        mInterface = builder.setSession("MyVPNService")
+                                .addAddress(deviceIp, 24)
+                                .addDnsServer(dnsIp)
+                                .addRoute(dnsIp, 32).establish();
+                    }
                     //b. Packets to be sent are queued in this input stream.
                     FileInputStream in = new FileInputStream(
                             mInterface.getFileDescriptor());
@@ -64,7 +78,7 @@ public class MyVpnService extends VpnService {
                             mInterface.getFileDescriptor());
                     // Allocate the buffer for a single packet.
                     ByteBuffer packet = ByteBuffer.allocate(1024);
-                    SocketAddress socketAddress= new InetSocketAddress("localhost", 9201);
+                    SocketAddress socketAddress= new InetSocketAddress("localhost", 8080);
 
 
                     //c. The UDP channel can be used to pass/get ip package to/from server
@@ -165,9 +179,9 @@ int packettrace=0;
                             }
 
                             // We are sending for a long time but not receiving.
-                            //if (timer > 20000) {
-                            //    throw new IllegalStateException("Timed out");
-                            //}
+                            if (timer > 20000) {
+                                throw new IllegalStateException("Timed out");
+                            }
                         }
 
 packettrace++;

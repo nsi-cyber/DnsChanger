@@ -1,0 +1,80 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.example.dnschangervpn"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="28"
+8-->C:\Users\nsi\AndroidStudioProjects\DnsChangerVpn\app\src\main\AndroidManifest.xml
+9        android:targetSdkVersion="30" />
+9-->C:\Users\nsi\AndroidStudioProjects\DnsChangerVpn\app\src\main\AndroidManifest.xml
+10
+11    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+11-->C:\Users\nsi\AndroidStudioProjects\DnsChangerVpn\app\src\main\AndroidManifest.xml:4:5-79
+11-->C:\Users\nsi\AndroidStudioProjects\DnsChangerVpn\app\src\main\AndroidManifest.xml:4:22-76
+12    <uses-permission android:name="android.permission.INTERNET" />
+12-->C:\Users\nsi\AndroidStudioProjects\DnsChangerVpn\app\src\main\AndroidManifest.xml:5:5-67
+12-->C:\Users\nsi\AndroidStudioProjects\DnsChangerVpn\app\src\main\AndroidManifest.xml:5:22-64
+13    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+13-->C:\Users\nsi\AndroidStudioProjects\DnsChangerVpn\app\src\main\AndroidManifest.xml:6:5-79
+13-->C:\Users\nsi\AndroidStudioProjects\DnsChangerVpn\app\src\main\AndroidManifest.xml:6:22-76
+14    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+14-->C:\Users\nsi\AndroidStudioProjects\DnsChangerVpn\app\src\main\AndroidManifest.xml:7:5-75
+14-->C:\Users\nsi\AndroidStudioProjects\DnsChangerVpn\app\src\main\AndroidManifest.xml:7:22-73
+15    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+15-->C:\Users\nsi\AndroidStudioProjects\DnsChangerVpn\app\src\main\AndroidManifest.xml:7:5-75
+15-->C:\Users\nsi\AndroidStudioProjects\DnsChangerVpn\app\src\main\AndroidManifest.xml:7:22-73
+16    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+16-->C:\Users\nsi\AndroidStudioProjects\DnsChangerVpn\app\src\main\AndroidManifest.xml:6:5-79
+16-->C:\Users\nsi\AndroidStudioProjects\DnsChangerVpn\app\src\main\AndroidManifest.xml:6:22-76
+17    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+17-->C:\Users\nsi\AndroidStudioProjects\DnsChangerVpn\app\src\main\AndroidManifest.xml:10:5-76
+17-->C:\Users\nsi\AndroidStudioProjects\DnsChangerVpn\app\src\main\AndroidManifest.xml:10:22-73
+18    <uses-permission android:name="android.permission.INTERNET" />
+18-->C:\Users\nsi\AndroidStudioProjects\DnsChangerVpn\app\src\main\AndroidManifest.xml:5:5-67
+18-->C:\Users\nsi\AndroidStudioProjects\DnsChangerVpn\app\src\main\AndroidManifest.xml:5:22-64
+19
+20    <application
+20-->C:\Users\nsi\AndroidStudioProjects\DnsChangerVpn\app\src\main\AndroidManifest.xml:12:5-30:19
+21        android:allowBackup="true"
+21-->C:\Users\nsi\AndroidStudioProjects\DnsChangerVpn\app\src\main\AndroidManifest.xml:13:9-35
+22        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+22-->[androidx.core:core:1.5.0] C:\Users\nsi\.gradle\caches\transforms-2\files-2.1\1602505273d43f41d2f450ba7fa6ad4f\core-1.5.0\AndroidManifest.xml:24:18-86
+23        android:debuggable="true"
+24        android:extractNativeLibs="false"
+25        android:icon="@mipmap/ic_launcher"
+25-->C:\Users\nsi\AndroidStudioProjects\DnsChangerVpn\app\src\main\AndroidManifest.xml:14:9-43
+26        android:label="@string/app_name"
+26-->C:\Users\nsi\AndroidStudioProjects\DnsChangerVpn\app\src\main\AndroidManifest.xml:15:9-41
+27        android:roundIcon="@mipmap/ic_launcher_round"
+27-->C:\Users\nsi\AndroidStudioProjects\DnsChangerVpn\app\src\main\AndroidManifest.xml:16:9-54
+28        android:supportsRtl="true"
+28-->C:\Users\nsi\AndroidStudioProjects\DnsChangerVpn\app\src\main\AndroidManifest.xml:17:9-35
+29        android:testOnly="true"
+30        android:theme="@style/Theme.DnsChangerVpn" >
+30-->C:\Users\nsi\AndroidStudioProjects\DnsChangerVpn\app\src\main\AndroidManifest.xml:18:9-51
+31        <activity android:name="com.example.dnschangervpn.MainActivity" >
+31-->C:\Users\nsi\AndroidStudioProjects\DnsChangerVpn\app\src\main\AndroidManifest.xml:19:5-25:16
+31-->C:\Users\nsi\AndroidStudioProjects\DnsChangerVpn\app\src\main\AndroidManifest.xml:19:15-43
+32            <intent-filter>
+32-->C:\Users\nsi\AndroidStudioProjects\DnsChangerVpn\app\src\main\AndroidManifest.xml:20:9-24:25
+33                <action android:name="android.intent.action.MAIN" />
+33-->C:\Users\nsi\AndroidStudioProjects\DnsChangerVpn\app\src\main\AndroidManifest.xml:21:13-65
+33-->C:\Users\nsi\AndroidStudioProjects\DnsChangerVpn\app\src\main\AndroidManifest.xml:21:21-62
+34
+35                <category android:name="android.intent.category.LAUNCHER" />
+35-->C:\Users\nsi\AndroidStudioProjects\DnsChangerVpn\app\src\main\AndroidManifest.xml:23:13-73
+35-->C:\Users\nsi\AndroidStudioProjects\DnsChangerVpn\app\src\main\AndroidManifest.xml:23:23-70
+36            </intent-filter>
+37        </activity>
+38
+39        <service
+39-->C:\Users\nsi\AndroidStudioProjects\DnsChangerVpn\app\src\main\AndroidManifest.xml:26:9-29:16
+40            android:name="com.example.dnschangervpn.MyVpnService"
+40-->C:\Users\nsi\AndroidStudioProjects\DnsChangerVpn\app\src\main\AndroidManifest.xml:27:13-41
+41            android:permission="android.permission.BIND_VPN_SERVICE" />
+41-->C:\Users\nsi\AndroidStudioProjects\DnsChangerVpn\app\src\main\AndroidManifest.xml:28:13-69
+42    </application>
+43
+44</manifest>
