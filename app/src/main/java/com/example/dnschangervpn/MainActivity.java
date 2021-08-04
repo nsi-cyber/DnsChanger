@@ -55,7 +55,7 @@ dnsV6Text.setVisibility(View.INVISIBLE);
             String DnsLink = dnsText.getText().toString();
                 String DnsV6Link = dnsV6Text.getText().toString();
 
-                Intent intent = VpnService.prepare(getApplicationContext());
+                Intent intent = vs.prepare(getApplicationContext());
 
             if (intent != null) {
                 startActivityForResult(intent, 0);
@@ -65,7 +65,7 @@ dnsV6Text.setVisibility(View.INVISIBLE);
             else{
                 as=false;
                 String DnsLink = dnsText.getText().toString();
-                Intent intent = VpnService.prepare(getApplicationContext());
+                Intent intent = vs.prepare(getApplicationContext());
                 if (intent != null) {
                     startActivityForResult(intent, 0);
                 } else {

@@ -2,7 +2,6 @@ com/example/dnschangervpn/BuildConfig.java
  com.example.dnschangervpn.BuildConfig
 com/example/dnschangervpn/MyVpnService.java
  com.example.dnschangervpn.MyVpnService
- com.example.dnschangervpn.MyVpnService$1
 com/example/dnschangervpn/MainActivity.java
  com.example.dnschangervpn.MainActivity
  com.example.dnschangervpn.MainActivity$1
