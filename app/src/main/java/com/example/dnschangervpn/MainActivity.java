@@ -124,6 +124,8 @@ dnsV6Text.setVisibility(View.INVISIBLE);
             intent.putExtra("v6",v6);
             intent.putExtra("deviceips",deviceIp);
             intent.putExtra("dnsips",DnsLink);
+            intent.putExtra("dns2ips",Dns2Link);
+
             intent.putExtra("disc",disconnect);
             startService(intent);
         }
@@ -135,6 +137,8 @@ dnsV6Text.setVisibility(View.INVISIBLE);
             intent.putExtra("v6",v6);
             intent.putExtra("deviceips",deviceIp);
             intent.putExtra("dnsips",DnsLink);
+            intent.putExtra("dns2ips",Dns2Link);
+
             intent.putExtra("dns6ips",DnsV6Link);
             intent.putExtra("disc",disconnect);
             startService(intent);

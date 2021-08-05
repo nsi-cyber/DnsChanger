@@ -48,6 +48,8 @@ public class MyVpnService extends VpnService {
 //Intent from MainActivity
         String deviceIp = intent.getStringExtra("deviceips");
         String dnsIp = intent.getStringExtra("dnsips");
+        String dns2Ip = intent.getStringExtra("dns2ips");
+
         boolean v6 = intent.getBooleanExtra("v6", false);
         boolean disc=intent.getBooleanExtra("disc",false);
         if (disc)
@@ -64,8 +66,10 @@ public class MyVpnService extends VpnService {
                 if (v6) {
                     builder.setSession("MyVPNService");
                     builder.addAddress(deviceIp, 24);
-                    builder.addDnsServer(dnsIp);
-                    builder.addDnsServer(dns6dIp);
+                    builder.addDnsServer(dnsIp)
+                            .addDnsServer(dns2Ip)
+                            .allowFamily(OsConstants.AF_INET);
+                    builder.addDnsServer(InetAddress.getByName(dns6dIp));
                     builder.addRoute(dns6dIp, 128)
                             .allowFamily(OsConstants.AF_INET)
                             .allowFamily(OsConstants.AF_INET6)
@@ -75,8 +79,7 @@ public class MyVpnService extends VpnService {
                     mInterface = builder.setSession("MyVPNService")
                             .addAddress(deviceIp, 24)
                             .addDnsServer(dnsIp)
-
-                            .addDnsServer("1.0.0.1")
+                            .addDnsServer(dns2Ip)
                             .allowFamily(OsConstants.AF_INET)
                             .establish();
                 }
@@ -115,7 +118,7 @@ public class MyVpnService extends VpnService {
                 int packettrace = 0;
                 byte[] bufferOutput = new byte[1024];
                 byte[] clearOutput = new byte[1024];
-
+                byte[] a=new byte[1024];
                 //e. Use a loop to pass packets.
                 while (true) {
 
@@ -154,7 +157,7 @@ public class MyVpnService extends VpnService {
                     }
 
                     // Read the incoming packet from the tunnel.
-                    byte[] a=new byte[1024];
+
                     length = tunnel.read(ByteBuffer.wrap(a));
 
                     if (length > 0) {
