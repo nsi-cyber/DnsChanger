@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.VpnService;
 import android.net.wifi.WifiManager;
 import android.os.ParcelFileDescriptor;
+import android.system.OsConstants;
 import android.text.format.Formatter;
 import android.util.Log;
 import android.app.PendingIntent;
@@ -13,10 +14,13 @@ import android.net.VpnService;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.FileDescriptor;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.SocketAddress;
@@ -45,6 +49,10 @@ public class MyVpnService extends VpnService {
         String deviceIp = intent.getStringExtra("deviceips");
         String dnsIp = intent.getStringExtra("dnsips");
         boolean v6 = intent.getBooleanExtra("v6", false);
+        boolean disc=intent.getBooleanExtra("disc",false);
+        if (disc)
+            System.exit(1);
+
         if (v6)
             dns6dIp = intent.getStringExtra("dns6ips");
 
@@ -57,24 +65,30 @@ public class MyVpnService extends VpnService {
                     builder.setSession("MyVPNService");
                     builder.addAddress(deviceIp, 24);
                     builder.addDnsServer(dnsIp);
-                    builder.addRoute(dnsIp, 32);
                     builder.addDnsServer(dns6dIp);
-                    builder.addRoute(dns6dIp, 128);
-                    mInterface = builder.establish();
+                    builder.addRoute(dns6dIp, 128)
+                            .allowFamily(OsConstants.AF_INET)
+                            .allowFamily(OsConstants.AF_INET6)
+                            .establish();
+
                 } else {
                     mInterface = builder.setSession("MyVPNService")
                             .addAddress(deviceIp, 24)
                             .addDnsServer(dnsIp)
-                            .addRoute(dnsIp, 32).establish();
+
+                            .addDnsServer("1.0.0.1")
+                            .allowFamily(OsConstants.AF_INET)
+                            .establish();
                 }
 
                 //b. Packets to be sent are queued in this input stream.
                 FileInputStream in = new FileInputStream(
                         mInterface.getFileDescriptor());
-
+             //   BufferedInputStream fin = new BufferedInputStream(in);
                 //b. Packets received need to be written to this output stream.
                 FileOutputStream out = new FileOutputStream(
                         mInterface.getFileDescriptor());
+              //  BufferedOutputStream fout = new BufferedOutputStream(out);
 
                 // Allocate the buffer for a single packet.
                 ByteBuffer packet = ByteBuffer.allocate(1024);
@@ -83,7 +97,7 @@ public class MyVpnService extends VpnService {
                 int localPort = new ServerSocket(0).getLocalPort();
 
                 // Create a socketadress for localhost
-                SocketAddress socketAddress = new InetSocketAddress("localhost", localPort);
+                SocketAddress socketAddress = new InetSocketAddress(InetAddress.getByName(deviceIp), localPort);
 
                 //c. The UDP channel can be used to pass/get ip package to/from server
                 DatagramChannel tunnel = DatagramChannel.open().bind(socketAddress);
@@ -107,7 +121,7 @@ public class MyVpnService extends VpnService {
                 while (true) {
 
 // Read packets from the channel (we're using the same channel for both read-write operations.)
-                    int readLength = tunnel.read(ByteBuffer.wrap(bufferOutput));
+                   // int readLength = tunnel.read(ByteBuffer.wrap(packet.array()));
                     bufferOutput = packet.array();
                     //get packet with in
                     //put packet to tunnel
@@ -125,9 +139,12 @@ public class MyVpnService extends VpnService {
 
                         // Write the outgoing packet to the tunnel.
                         packet.limit(length);
-                        tunnel.write(packet);
-                        packet.clear();
-
+                        if (tunnel.isConnected()) {
+                            tunnel.write(packet);
+                            packet.clear();
+                        }
+                        else
+                            continue;
                         // There might be more outgoing packets.
                         idle = false;
 
@@ -138,17 +155,20 @@ public class MyVpnService extends VpnService {
                     }
 
                     // Read the incoming packet from the tunnel.
-                    length = tunnel.read(packet);
+                    byte[] a=new byte[1024];
+                    length = tunnel.read(ByteBuffer.wrap(a));
+
                     if (length > 0) {
 
                         // Ignore control messages, which start with zero.
-                        if (bufferOutput[packettrace] != 0) {
+                        if (a[packettrace] != 0) {
 
                             // Write the incoming packet to the output stream.
 
-                            out.write(bufferOutput, 0, readLength);
+                            out.write(a, 0, length);
+                            out.flush();
                         }
-                        bufferOutput = clearOutput;
+                        a = clearOutput;
 
                         // There might be more incoming packets.
                         idle = false;

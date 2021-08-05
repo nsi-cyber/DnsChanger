@@ -6,3 +6,4 @@ com/example/dnschangervpn/MainActivity.java
  com.example.dnschangervpn.MainActivity
  com.example.dnschangervpn.MainActivity$1
  com.example.dnschangervpn.MainActivity$2
+ com.example.dnschangervpn.MainActivity$3

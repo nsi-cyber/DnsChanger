@@ -36,7 +36,7 @@
 18-->C:\Users\nsi\AndroidStudioProjects\DnsChangerVpn\app\src\main\AndroidManifest.xml:5:22-64
 19
 20    <application
-20-->C:\Users\nsi\AndroidStudioProjects\DnsChangerVpn\app\src\main\AndroidManifest.xml:12:5-30:19
+20-->C:\Users\nsi\AndroidStudioProjects\DnsChangerVpn\app\src\main\AndroidManifest.xml:12:5-31:19
 21        android:allowBackup="true"
 21-->C:\Users\nsi\AndroidStudioProjects\DnsChangerVpn\app\src\main\AndroidManifest.xml:13:9-35
 22        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
@@ -70,11 +70,13 @@
 37        </activity>
 38
 39        <service
-39-->C:\Users\nsi\AndroidStudioProjects\DnsChangerVpn\app\src\main\AndroidManifest.xml:26:9-29:16
+39-->C:\Users\nsi\AndroidStudioProjects\DnsChangerVpn\app\src\main\AndroidManifest.xml:26:9-30:16
 40            android:name="com.example.dnschangervpn.MyVpnService"
 40-->C:\Users\nsi\AndroidStudioProjects\DnsChangerVpn\app\src\main\AndroidManifest.xml:27:13-41
-41            android:permission="android.permission.BIND_VPN_SERVICE" />
+41            android:permission="android.permission.BIND_VPN_SERVICE"
 41-->C:\Users\nsi\AndroidStudioProjects\DnsChangerVpn\app\src\main\AndroidManifest.xml:28:13-69
-42    </application>
-43
-44</manifest>
+42            android:stopWithTask="true" />
+42-->C:\Users\nsi\AndroidStudioProjects\DnsChangerVpn\app\src\main\AndroidManifest.xml:29:13-40
+43    </application>
+44
+45</manifest>

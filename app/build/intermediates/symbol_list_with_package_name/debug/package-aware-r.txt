@@ -1827,6 +1827,7 @@ id blocking
 id bottom
 id bounce
 id button
+id button2
 id buttonPanel
 id cancel_button
 id center
@@ -2121,6 +2122,7 @@ id textStart
 id textTop
 id textView
 id textView2
+id textView3
 id text_input_end_icon
 id text_input_error_icon
 id text_input_start_icon
