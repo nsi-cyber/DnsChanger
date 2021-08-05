@@ -84,11 +84,10 @@ public class MyVpnService extends VpnService {
                 //b. Packets to be sent are queued in this input stream.
                 FileInputStream in = new FileInputStream(
                         mInterface.getFileDescriptor());
-             //   BufferedInputStream fin = new BufferedInputStream(in);
+
                 //b. Packets received need to be written to this output stream.
                 FileOutputStream out = new FileOutputStream(
                         mInterface.getFileDescriptor());
-              //  BufferedOutputStream fout = new BufferedOutputStream(out);
 
                 // Allocate the buffer for a single packet.
                 ByteBuffer packet = ByteBuffer.allocate(1024);
@@ -121,7 +120,7 @@ public class MyVpnService extends VpnService {
                 while (true) {
 
 // Read packets from the channel (we're using the same channel for both read-write operations.)
-                   // int readLength = tunnel.read(ByteBuffer.wrap(packet.array()));
+
                     bufferOutput = packet.array();
                     //get packet with in
                     //put packet to tunnel
@@ -258,61 +257,13 @@ public class MyVpnService extends VpnService {
             // Normally we should not receive random packets.
             int length = tunnel.read(packet);
             if (length > 0 && packet.get(0) == 0) {
-                configure(new String(packet.array(), 1, length - 1).trim());
+
                 return;
             }
         }
         throw new IllegalStateException("Timed out");
     }
 
-    private void configure(String parameters) throws Exception {
-        // If the old interface has exactly the same parameters, use it!
-        if (mInterface != null) {
-            Log.i(TAG, "Using the previous interface");
-            return;
-        }
-
-        // Configure a builder while parsing the parameters.
-        Builder builder = new Builder();
-        for (String parameter : parameters.split(" ")) {
-            String[] fields = parameter.split(",");
-            try {
-                switch (fields[0].charAt(0)) {
-                    case 'm':
-                        builder.setMtu(Short.parseShort(fields[1]));
-                        break;
-                    case 'a':
-                        builder.addAddress(fields[1], Integer.parseInt(fields[2]));
-                        break;
-                    case 'r':
-                        builder.addRoute(fields[1], Integer.parseInt(fields[2]));
-                        break;
-                    case 'd':
-                        builder.addDnsServer(fields[1]);
-                        break;
-                    case 's':
-                        builder.addSearchDomain(fields[1]);
-                        break;
-                }
-            } catch (Exception e) {
-                throw new IllegalArgumentException("Bad parameter: " + parameter);
-            }
-        }
-
-        // Close the old interface since the parameters have been changed.
-        try {
-            mInterface.close();
-        } catch (Exception e) {
-            // ignore
-        }
-
-        // Create a new interface using the builder and save the parameters.
-        mInterface = builder.setSession(mServerAddress)
-                .setConfigureIntent(mConfigureIntent)
-                .establish();
-        mParameters = parameters;
-        Log.i(TAG, "New interface: " + parameters);
-    }
 
     @Override
     public void onDestroy() {
