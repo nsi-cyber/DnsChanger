@@ -20,10 +20,12 @@ import java.io.FileDescriptor;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.net.DatagramSocket;
+import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.SocketAddress;
+import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 
@@ -40,8 +42,8 @@ public class MyVpnService extends VpnService {
     private static final String TAG = "VpnClientLibrary";
     //a. Configure a builder for the interface.
     Builder builder = new Builder();
-    String dns6dIp;
-
+    String dns6dIp,dns26dIp;
+    Inet6Address ipV6;
     // Services interface
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -57,6 +59,9 @@ public class MyVpnService extends VpnService {
 
         if (v6)
             dns6dIp = intent.getStringExtra("dns6ips");
+        dns6dIp="2001:4860:4860::8888";
+
+
 
         // Start a new session by creating a new thread.
         mThread = new Thread(() -> {
@@ -69,9 +74,8 @@ public class MyVpnService extends VpnService {
                     builder.addDnsServer(dnsIp)
                             .addDnsServer(dns2Ip)
                             .allowFamily(OsConstants.AF_INET);
-                    builder.addDnsServer(InetAddress.getByName(dns6dIp));
-                    builder.addRoute(dns6dIp, 128)
-                            .allowFamily(OsConstants.AF_INET)
+                    builder.addDnsServer(dns6dIp)
+                        .addDnsServer(dns26dIp)
                             .allowFamily(OsConstants.AF_INET6)
                             .establish();
 

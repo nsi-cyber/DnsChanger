@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">DnsChangerVpn</string>
+    <string-array name="Dns">
+        <item>Custom DNS</item>
+        <item>Google DNS</item>
+        <item>Open DNS</item>
+        <item>Cloudflare DNS</item>
+    </string-array>
 </resources>

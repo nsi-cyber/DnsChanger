@@ -57,6 +57,7 @@ animator mtrl_fab_hide_motion_spec
 animator mtrl_fab_show_motion_spec
 animator mtrl_fab_transformation_sheet_collapse_spec
 animator mtrl_fab_transformation_sheet_expand_spec
+array Dns
 attr actionBarDivider
 attr actionBarItemBackground
 attr actionBarPopupTheme
@@ -1695,6 +1696,9 @@ drawable design_ic_visibility_off
 drawable design_password_eye
 drawable design_snackbar_background
 drawable ic_clock_black_24dp
+drawable ic_connect
+drawable ic_disconnect
+drawable ic_dns
 drawable ic_keyboard_black_24dp
 drawable ic_launcher_background
 drawable ic_launcher_foreground
@@ -1702,6 +1706,7 @@ drawable ic_mtrl_checked_circle
 drawable ic_mtrl_chip_checked_black
 drawable ic_mtrl_chip_checked_circle
 drawable ic_mtrl_chip_close_circle
+drawable ic_speedtest
 drawable material_cursor_drawable
 drawable material_ic_calendar_black_24dp
 drawable material_ic_clear_black_24dp
@@ -1828,6 +1833,7 @@ id bottom
 id bounce
 id button
 id button2
+id button8
 id buttonPanel
 id cancel_button
 id center
@@ -2075,6 +2081,7 @@ id snap
 id snapMargins
 id spacer
 id special_effects_controller_view_tag
+id spinner
 id spline
 id split_action_bar
 id spread
@@ -2121,8 +2128,17 @@ id textSpacerNoTitle
 id textStart
 id textTop
 id textView
+id textView11
+id textView12
+id textView13
+id textView14
+id textView15
+id textView16
+id textView17
+id textView18
 id textView2
 id textView3
+id textView4
 id text_input_end_icon
 id text_input_error_icon
 id text_input_start_icon
@@ -2317,6 +2333,7 @@ layout text_view_with_line_height_from_style
 layout text_view_with_theme_line_height
 layout text_view_without_line_height
 mipmap ic_launcher
+mipmap ic_launcher_foreground
 mipmap ic_launcher_round
 plurals mtrl_badge_content_description
 string abc_action_bar_home_description
