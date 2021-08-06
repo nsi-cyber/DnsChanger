@@ -1,22 +1,11 @@
 package com.example.dnschangervpn;
 
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.net.VpnService;
-import android.net.wifi.WifiManager;
 import android.os.ParcelFileDescriptor;
 import android.system.OsConstants;
-import android.text.format.Formatter;
-import android.util.Log;
-import android.app.PendingIntent;
-import android.net.VpnService;
-import android.os.ParcelFileDescriptor;
 import android.util.Log;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.FileDescriptor;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.net.DatagramSocket;
@@ -25,25 +14,18 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.SocketAddress;
-import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.net.InetSocketAddress;
-import java.nio.channels.DatagramChannel;
-
 public class MyVpnService extends VpnService {
-    private Thread mThread;
-    private ParcelFileDescriptor mInterface;
-    private PendingIntent mConfigureIntent;
-    private String mParameters,mServerAddress;
     private static final String TAG = "VpnClientLibrary";
     //a. Configure a builder for the interface.
     Builder builder = new Builder();
-    String dns6dIp,dns26dIp;
+    String dns6dIp, dns26dIp;
     Inet6Address ipV6;
+    private Thread mThread;
+    private ParcelFileDescriptor mInterface;
+
     // Services interface
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -53,15 +35,15 @@ public class MyVpnService extends VpnService {
         String dns2Ip = intent.getStringExtra("dns2ips");
 
         boolean v6 = intent.getBooleanExtra("v6", false);
-        boolean disc=intent.getBooleanExtra("disc",false);
+        boolean disc = intent.getBooleanExtra("disc", false);
         if (disc)
             System.exit(1);
 
         if (v6)
             dns6dIp = intent.getStringExtra("dns6ips");
-        dns6dIp="2001:4860:4860::8888";
+        dns6dIp = "2001:4860:4860::8888";
 
-
+//todo fix IPv6
 
         // Start a new session by creating a new thread.
         mThread = new Thread(() -> {
@@ -75,7 +57,7 @@ public class MyVpnService extends VpnService {
                             .addDnsServer(dns2Ip)
                             .allowFamily(OsConstants.AF_INET);
                     builder.addDnsServer(dns6dIp)
-                        .addDnsServer(dns26dIp)
+                            .addDnsServer(dns26dIp)
                             .allowFamily(OsConstants.AF_INET6)
                             .establish();
 
@@ -122,7 +104,7 @@ public class MyVpnService extends VpnService {
                 int packettrace = 0;
                 byte[] bufferOutput = new byte[1024];
                 byte[] clearOutput = new byte[1024];
-                byte[] a=new byte[1024];
+                byte[] a = new byte[1024];
                 //e. Use a loop to pass packets.
                 while (true) {
 
@@ -148,8 +130,7 @@ public class MyVpnService extends VpnService {
                         if (tunnel.isConnected()) {
                             tunnel.write(packet);
                             packet.clear();
-                        }
-                        else
+                        } else
                             continue;
                         // There might be more outgoing packets.
                         idle = false;
@@ -232,7 +213,7 @@ public class MyVpnService extends VpnService {
                 }
             }
 
-         //
+            //
         }, "MyVpnRunnable");
         //start the service
         mThread.start();

@@ -1,14 +1,11 @@
 package com.example.dnschangervpn;
 
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.VpnService;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.os.ParcelFileDescriptor;
 import android.text.format.Formatter;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -135,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     String Dns2Link = dns2Text.getText().toString();
                     String DnsV6Link = dnsV6Text.getText().toString();
 
-                    Intent intent = vs.prepare(getApplicationContext());
+                    Intent intent = VpnService.prepare(getApplicationContext());
 
                     if (intent != null) {
                         startActivityForResult(intent, 0);
@@ -148,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     String DnsLink = dnsText.getText().toString();
                     String Dns2Link = dns2Text.getText().toString();
 
-                    Intent intent = vs.prepare(getApplicationContext());
+                    Intent intent = VpnService.prepare(getApplicationContext());
                     if (intent != null) {
                         startActivityForResult(intent, 0);
                     } else {
@@ -172,7 +169,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     String Dns2Link = dns2Text.getText().toString();
                     String DnsV6Link = dnsV6Text.getText().toString();
 
-                    Intent intent = vs.prepare(getApplicationContext());
+                    Intent intent = VpnService.prepare(getApplicationContext());
 
                     if (intent != null) {
                         startActivityForResult(intent, 0);
@@ -184,7 +181,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     String DnsLink = dnsText.getText().toString();
                     String Dns2Link = dns2Text.getText().toString();
 
-                    Intent intent = vs.prepare(getApplicationContext());
+                    Intent intent = VpnService.prepare(getApplicationContext());
                     if (intent != null) {
                         startActivityForResult(intent, 0);
                     } else {
@@ -286,8 +283,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
 
         // Extracting the average round trip time from the inputLine string
-        String afterEqual = inputLine.substring(inputLine.indexOf("="), inputLine.length()).trim();
-        String afterFirstSlash = afterEqual.substring(afterEqual.indexOf('/') + 1, afterEqual.length()).trim();
+        String afterEqual = inputLine.substring(inputLine.indexOf("=")).trim();
+        String afterFirstSlash = afterEqual.substring(afterEqual.indexOf('/') + 1).trim();
         String strAvgRtt = afterFirstSlash.substring(0, afterFirstSlash.indexOf('/'));
         avgRtt = Double.valueOf(strAvgRtt);
 
