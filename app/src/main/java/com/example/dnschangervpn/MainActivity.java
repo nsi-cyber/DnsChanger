@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Button discon = findViewById(R.id.button2);
         Button msTest = findViewById(R.id.button8);
 
-        TextView Latency = findViewById(R.id.textView11);
+
         TextView dnsText = findViewById(R.id.textView);
         TextView dns2Text = findViewById(R.id.textView3);
         TextView dnsV6Text = findViewById(R.id.textView2);
@@ -200,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         TextView dns2Text = findViewById(R.id.textView3);
         TextView dnsV6Text = findViewById(R.id.textView2);
         TextView dns2V6Text = findViewById(R.id.textView4);
-        TextView Latency = findViewById(R.id.textView11);
+
         String text = adapterView.getItemAtPosition(i).toString();
         if (text.equals("Custom DNS")) {
         } else if (text.equals("Google DNS")) {
@@ -208,19 +208,19 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             dns2Text.setText("8.8.4.4");
             dnsV6Text.setText("2001:4860:4860::8888");
             dns2V6Text.setText("2001:4860:4860::8844");
-            Latency.setText("MS: " + getLatency(dnsText.getText().toString()));
+            
         } else if (text.equals("Cloudflare DNS")) {
             dnsText.setText("1.1.1.1");
             dns2Text.setText("1.0.0.1");
             dnsV6Text.setText("2606:4700:4700::1111");
             dns2V6Text.setText("2606:4700:4700::1001");
-            Latency.setText("MS: " + getLatency(dnsText.getText().toString()));
+
         } else if (text.equals("Open DNS")) {
             dnsText.setText("208.67.222.222");
             dns2Text.setText("208.67.220.220");
             dnsV6Text.setText("2620:119:35::35");
             dns2V6Text.setText("2620:119:53::53");
-            Latency.setText("MS: " + getLatency(dnsText.getText().toString()));
+
         }
 
         Toast.makeText(adapterView.getContext(), text, Toast.LENGTH_SHORT);
