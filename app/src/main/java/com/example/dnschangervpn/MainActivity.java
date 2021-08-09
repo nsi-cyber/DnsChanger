@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -64,6 +65,9 @@ Button fast=findViewById(R.id.button3);
         TextView bla1 = findViewById(R.id.textView13);
         TextView bla2 = findViewById(R.id.textView14);
         TextView bla3 = findViewById(R.id.textView15);
+        TextView isConnecte = findViewById(R.id.textView6);
+
+        ImageView wifi = findViewById(R.id.imageView3);
 
         dnsV6Text.setVisibility(View.INVISIBLE);
         dns2V6Text.setVisibility(View.INVISIBLE);
@@ -319,6 +323,9 @@ public void devIpAd() throws SocketException {
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data, String deviceIp, String DnsLink, String Dns2Link, boolean v6, boolean disconnect) {
         super.onActivityResult(requestCode, resultCode, data);
+        TextView isConnecte = findViewById(R.id.textView6);
+
+        ImageView wifi = findViewById(R.id.imageView3);
         if (resultCode == RESULT_OK) {
             Intent intent = new Intent(this, MyVpnService.class);
             intent.putExtra("v6", v6);
@@ -327,12 +334,23 @@ public void devIpAd() throws SocketException {
             intent.putExtra("dns2ips", Dns2Link);
 
             intent.putExtra("disc", disconnect);
+            if(!disconnect) {
+                isConnecte.setText("CONNECTED");
+                wifi.setImageDrawable(getResources().getDrawable(R.drawable.ic_wifitrue, getApplicationContext().getTheme()));
+            }
+            else{
+                isConnecte.setText("NOT CONNECTED");
+                wifi.setImageDrawable(getResources().getDrawable(R.drawable.ic_wififalse, getApplicationContext().getTheme()));
+            }
             startService(intent);
         }
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data, String deviceIp, String DnsLink, String Dns2Link, String DnsV6Link,String Dns2V6Link, boolean v6, boolean disconnect) {
         super.onActivityResult(requestCode, resultCode, data);
+        TextView isConnecte = findViewById(R.id.textView6);
+
+        ImageView wifi = findViewById(R.id.imageView3);
         if (resultCode == RESULT_OK) {
             Intent intent = new Intent(this, MyVpnService.class);
             intent.putExtra("v6", v6);
@@ -343,6 +361,15 @@ public void devIpAd() throws SocketException {
             intent.putExtra("dns6ips", DnsV6Link);
             intent.putExtra("dns26ips", Dns2V6Link);
             intent.putExtra("disc", disconnect);
+            if(!disconnect) {
+                isConnecte.setText("CONNECTED");
+                wifi.setImageDrawable(getResources().getDrawable(R.drawable.ic_wifitrue, getApplicationContext().getTheme()));
+            }
+            else{
+                isConnecte.setText("NOT CONNECTED");
+                wifi.setImageDrawable(getResources().getDrawable(R.drawable.ic_wififalse, getApplicationContext().getTheme()));
+            }
+
             startService(intent);
         }
     }

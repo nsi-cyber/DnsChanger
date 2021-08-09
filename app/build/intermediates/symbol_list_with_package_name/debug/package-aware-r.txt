@@ -1707,6 +1707,8 @@ drawable ic_mtrl_chip_checked_black
 drawable ic_mtrl_chip_checked_circle
 drawable ic_mtrl_chip_close_circle
 drawable ic_speedtest
+drawable ic_wififalse
+drawable ic_wifitrue
 drawable material_cursor_drawable
 drawable material_ic_calendar_black_24dp
 drawable material_ic_clear_black_24dp
@@ -1934,6 +1936,7 @@ id ifRoom
 id ignore
 id ignoreRequest
 id image
+id imageView3
 id info
 id invisible
 id inward
@@ -2139,6 +2142,7 @@ id textView18
 id textView2
 id textView3
 id textView4
+id textView6
 id text_input_end_icon
 id text_input_error_icon
 id text_input_start_icon

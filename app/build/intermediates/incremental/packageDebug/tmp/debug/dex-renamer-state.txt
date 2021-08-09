@@ -1,4 +1,4 @@
-#Mon Aug 09 15:53:37 EET 2021
+#Mon Aug 09 16:19:05 EET 2021
 base.0=C\:\\Users\\nsi\\AndroidStudioProjects\\DnsChangerVpn\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
 path.1=classes.dex
 renamed.1=classes2.dex
