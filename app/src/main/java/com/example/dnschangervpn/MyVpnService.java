@@ -14,15 +14,18 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.SocketAddress;
+import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
+
+import static java.net.InetAddress.getByName;
 
 public class MyVpnService extends VpnService {
     private static final String TAG = "VpnClientLibrary";
     //a. Configure a builder for the interface.
     Builder builder = new Builder();
     String dns6dIp, dns26dIp;
-    Inet6Address ipV6;
+    Inet6Address ipV6,ssd,ssd2;
     private Thread mThread;
     private ParcelFileDescriptor mInterface;
 
@@ -41,8 +44,14 @@ public class MyVpnService extends VpnService {
 
         if (v6)
             dns6dIp = intent.getStringExtra("dns6ips");
-        dns6dIp = "2001:4860:4860::8888";
+        dns26dIp = intent.getStringExtra("dns26ips");
+        try {
+            ssd= (Inet6Address) Inet6Address.getByName(dns6dIp);
+            ssd2= (Inet6Address) Inet6Address.getByName(dns26dIp);
 
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
 //todo fix IPv6
 
         // Start a new session by creating a new thread.
@@ -51,13 +60,13 @@ public class MyVpnService extends VpnService {
             try {
                 //a. Configure the TUN and get the interface.
                 if (v6) {
-                    builder.setSession("MyVPNService");
-                    builder.addAddress(deviceIp, 24);
-                    builder.addDnsServer(dnsIp)
-                            .addDnsServer(dns2Ip)
-                            .allowFamily(OsConstants.AF_INET);
-                    builder.addDnsServer(dns6dIp)
-                            .addDnsServer(dns26dIp)
+
+                    mInterface = builder.setSession("MyVPNService").addAddress(deviceIp, 24)
+                   .addDnsServer(dnsIp)
+                     .addDnsServer(dns2Ip)
+                           .addDnsServer(ssd)
+                      .addDnsServer(ssd2)
+                           .allowFamily(OsConstants.AF_INET)
                             .allowFamily(OsConstants.AF_INET6)
                             .establish();
 
@@ -85,7 +94,7 @@ public class MyVpnService extends VpnService {
                 int localPort = new ServerSocket(0).getLocalPort();
 
                 // Create a socketadress for localhost
-                SocketAddress socketAddress = new InetSocketAddress(InetAddress.getByName(deviceIp), localPort);
+                SocketAddress socketAddress = new InetSocketAddress(getByName(deviceIp), localPort);
 
                 //c. The UDP channel can be used to pass/get ip package to/from server
                 DatagramChannel tunnel = DatagramChannel.open().bind(socketAddress);

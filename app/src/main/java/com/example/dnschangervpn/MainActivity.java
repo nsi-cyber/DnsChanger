@@ -131,13 +131,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     String DnsLink = dnsText.getText().toString();
                     String Dns2Link = dns2Text.getText().toString();
                     String DnsV6Link = dnsV6Text.getText().toString();
-
+                    String Dns2V6Link = dns2V6Text.getText().toString();
                     Intent intent = VpnService.prepare(getApplicationContext());
 
                     if (intent != null) {
                         startActivityForResult(intent, 0);
                     } else {
-                        onActivityResult(0, RESULT_OK, null, deviceIp, DnsLink, Dns2Link, DnsV6Link, as, disconnect);
+                        onActivityResult(0, RESULT_OK, null, deviceIp, DnsLink, Dns2Link, DnsV6Link,Dns2V6Link, as, disconnect);
                     }
 
                 } else {
@@ -168,13 +168,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     String DnsLink = dnsText.getText().toString();
                     String Dns2Link = dns2Text.getText().toString();
                     String DnsV6Link = dnsV6Text.getText().toString();
-
+                    String Dns2V6Link = dns2V6Text.getText().toString();
                     Intent intent = VpnService.prepare(getApplicationContext());
 
                     if (intent != null) {
                         startActivityForResult(intent, 0);
                     } else {
-                        onActivityResult(0, RESULT_OK, null, deviceIp, DnsLink, Dns2Link, DnsV6Link, as, disconnect);
+                        onActivityResult(0, RESULT_OK, null, deviceIp, DnsLink, Dns2Link, DnsV6Link,Dns2V6Link, as, disconnect);
                     }
                 } else {
                     as = false;
@@ -206,20 +206,20 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         } else if (text.equals("Google DNS")) {
             dnsText.setText("8.8.8.8");
             dns2Text.setText("8.8.4.4");
-            dnsV6Text.setText("2001:4860:4860::8888");
-            dns2V6Text.setText("2001:4860:4860::8844");
-            
+            dnsV6Text.setText("2001:4860:4860:0000:0000:0000:0000:8888");
+            dns2V6Text.setText("2001:4860:4860:0000:0000:0000:0000:8844");
+
         } else if (text.equals("Cloudflare DNS")) {
             dnsText.setText("1.1.1.1");
             dns2Text.setText("1.0.0.1");
-            dnsV6Text.setText("2606:4700:4700::1111");
-            dns2V6Text.setText("2606:4700:4700::1001");
+            dnsV6Text.setText("2606:4700:4700:0000:0000:0000:0000:1111");
+            dns2V6Text.setText("2606:4700:4700:0000:0000:0000:0000:1001");
 
         } else if (text.equals("Open DNS")) {
             dnsText.setText("208.67.222.222");
             dns2Text.setText("208.67.220.220");
-            dnsV6Text.setText("2620:119:35::35");
-            dns2V6Text.setText("2620:119:53::53");
+            dnsV6Text.setText("2620:119:35:0000:0000:0000:0000:35");
+            dns2V6Text.setText("2620:119:53:0000:0000:0000:0000:53");
 
         }
 
@@ -245,7 +245,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent data, String deviceIp, String DnsLink, String Dns2Link, String DnsV6Link, boolean v6, boolean disconnect) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data, String deviceIp, String DnsLink, String Dns2Link, String DnsV6Link,String Dns2V6Link, boolean v6, boolean disconnect) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             Intent intent = new Intent(this, MyVpnService.class);
@@ -255,6 +255,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             intent.putExtra("dns2ips", Dns2Link);
 
             intent.putExtra("dns6ips", DnsV6Link);
+            intent.putExtra("dns26ips", Dns2V6Link);
             intent.putExtra("disc", disconnect);
             startService(intent);
         }
