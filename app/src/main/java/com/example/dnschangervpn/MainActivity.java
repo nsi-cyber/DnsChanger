@@ -2,6 +2,8 @@ package com.example.dnschangervpn;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.VpnService;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -20,13 +22,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.Collections;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     VpnService vs = new VpnService();
     VpnService.Builder builder = vs.new Builder();
     boolean as;
     boolean disconnect = false;
-
+    boolean wifiConnected = false;
+    boolean mobileConnected = false;
+    String deviceIp;
+String bestDNS="";
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -41,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Button goButton = findViewById(R.id.button);
         Button discon = findViewById(R.id.button2);
         Button msTest = findViewById(R.id.button8);
-
+Button fast=findViewById(R.id.button3);
 
         TextView dnsText = findViewById(R.id.textView);
         TextView dns2Text = findViewById(R.id.textView3);
@@ -64,11 +74,22 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         ms1.setVisibility(View.INVISIBLE);
         ms2.setVisibility(View.INVISIBLE);
         ms3.setVisibility(View.INVISIBLE);
+        try {
+            devIpAd();
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
 
-        WifiManager wm = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
 
-        String deviceIp = Formatter.formatIpAddress(wm.getConnectionInfo().getIpAddress());
-
+        fast.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+        //todo
+        testMSforAll();
+        setDns(bestDNS);
+        onActivityResult(0, RESULT_OK, null, deviceIp, dnsText.getText().toString(), dns2Text.getText().toString(), as, disconnect);
+    }
+});
 
         isIpv6.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,6 +104,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 }
             }
         });
+
+
 
 
         msTest.setOnClickListener(new View.OnClickListener() {
@@ -107,13 +130,17 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
                 if (a1 < a2) {
                     if (a1 < a3) {
+                        bestDNS="Google DNS";
                         Toast.makeText(getApplicationContext(), "Google DNS has min latency", Toast.LENGTH_LONG).show();
                     } else {
+                        bestDNS="Open DNS";
                         Toast.makeText(getApplicationContext(), "Open DNS has min latency", Toast.LENGTH_LONG).show();
                     }
                 } else if (a2 < a3) {
-                    Toast.makeText(getApplicationContext(), "CloudFlare DNS has min latency", Toast.LENGTH_LONG).show();
+                    bestDNS="Cloudflare DNS";
+                    Toast.makeText(getApplicationContext(), "Cloudflare DNS has min latency", Toast.LENGTH_LONG).show();
                 } else {
+                    bestDNS="Open DNS";
                     Toast.makeText(getApplicationContext(), "Open DNS has min latency", Toast.LENGTH_LONG).show();
                 }
 
@@ -194,16 +221,35 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+    public void testMSforAll(){
+        Double a1 = getLatency("8.8.8.8");
+        Double a2 = getLatency("1.1.1.1");
+        Double a3 = getLatency("208.67.222.222");
+        if (a1 < a2) {
+            if (a1 < a3) {
+                bestDNS="Google DNS";
+
+            } else {
+                bestDNS="Open DNS";
+               ;
+            }
+        } else if (a2 < a3) {
+            bestDNS="Cloudflare DNS";
+
+        } else {
+            bestDNS="Open DNS";
+
+        }
+
+    }
+
+
+    public void setDns(String text){
         TextView dnsText = findViewById(R.id.textView);
         TextView dns2Text = findViewById(R.id.textView3);
         TextView dnsV6Text = findViewById(R.id.textView2);
         TextView dns2V6Text = findViewById(R.id.textView4);
-
-        String text = adapterView.getItemAtPosition(i).toString();
-        if (text.equals("Custom DNS")) {
-        } else if (text.equals("Google DNS")) {
+        if (text.equals("Google DNS")) {
             dnsText.setText("8.8.8.8");
             dns2Text.setText("8.8.4.4");
             dnsV6Text.setText("2001:4860:4860:0000:0000:0000:0000:8888");
@@ -222,6 +268,46 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             dns2V6Text.setText("2620:119:53:0000:0000:0000:0000:53");
 
         }
+
+    }
+
+
+public void devIpAd() throws SocketException {
+    ConnectivityManager connectivityManager= (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+    NetworkInfo networkInfo=connectivityManager.getActiveNetworkInfo();
+    if(networkInfo!=null && networkInfo.isConnected()){
+        wifiConnected=networkInfo.getType()==ConnectivityManager.TYPE_WIFI;
+        mobileConnected=networkInfo.getType()==ConnectivityManager.TYPE_MOBILE;
+        if(wifiConnected)
+        {
+            WifiManager wm = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+
+            deviceIp = Formatter.formatIpAddress(wm.getConnectionInfo().getIpAddress());
+        }
+        else if(mobileConnected)
+        {
+            List<NetworkInterface> interfaces = Collections.list(NetworkInterface.getNetworkInterfaces());
+            for (NetworkInterface intf : interfaces) {
+                List<InetAddress> addrs = Collections.list(intf.getInetAddresses());
+                for (InetAddress addr : addrs) {
+                    if (!addr.isLoopbackAddress()) {
+                        deviceIp=addr.getHostAddress();
+                    }
+        }
+
+    }
+}}}
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        TextView dnsText = findViewById(R.id.textView);
+        TextView dns2Text = findViewById(R.id.textView3);
+        TextView dnsV6Text = findViewById(R.id.textView2);
+        TextView dns2V6Text = findViewById(R.id.textView4);
+
+        String text = adapterView.getItemAtPosition(i).toString();
+        if (text.equals("Custom DNS")) {
+        } else setDns(text);
 
         Toast.makeText(adapterView.getContext(), text, Toast.LENGTH_SHORT);
     }

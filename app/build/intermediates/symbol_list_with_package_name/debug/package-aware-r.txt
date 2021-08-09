@@ -1833,6 +1833,7 @@ id bottom
 id bounce
 id button
 id button2
+id button3
 id button8
 id buttonPanel
 id cancel_button
